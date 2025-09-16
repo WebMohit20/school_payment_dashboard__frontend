@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from "react-router-dom"
 import axios from "axios"
 import Table from '../components/Table'
 import Pagination from '../components/Pagination'
 
 function TransactionsOverview() {
 
-    const [data, setData] = useState({transactions:[],maxPages:1,totalTransactions:0})
-    const [page, setPage] = useState(1)
+    const [searchParams, setSearchParams] = useSearchParams();
+
+
+    const [data, setData] = useState({})
+    const [page, setPage] = useState(Number(searchParams.get("page")) || 1)
     const [limit, setLimit] = useState(10)
-    const [sort, setSort] = useState("payment_time")
-    const [order, setOrder] = useState("asc")
-    const [loading,setloading] = useState(true)
-    
+    const [sort, setSort] = useState(searchParams.get("sort") || "payment_time")
+    const [order, setOrder] = useState(searchParams.get("order") || "asc")
+    const [loading, setloading] = useState(true)
+    const [status, setStatus] = useState(searchParams.get("status").toLowerCase() || "")
+
     useEffect(() => {
         setloading(true)
         axios.get("http://localhost:3000/api/v1/transactions", {
@@ -19,35 +24,73 @@ function TransactionsOverview() {
                 page,
                 limit,
                 sort,
-                order
+                order,
+                status
             }
         })
             .then(res => {
-                console.log(res.data.maxPages)
-                setData({"transactions":res.data.data,"maxPages":res.data.maxPages,"totalTransactions":res.data.totalTransactions})
+                console.log(res.data)
+                setData(res.data)
                 setloading(false)
             })
             .catch(err => console.log(err))
-    }, [page, sort, order])
+    }, [page, sort, order, status])
 
-    if(loading){
-        return (<div className="loading loading-spinner loading-lg mt-4">loader</div>)
-    }
+    useEffect(() => {
+        const params = {}
+        params.page = page
+        params.sort = sort
+        params.order = order
+        params.status = status
+        setSearchParams(params, { replace: true })
+    }, [page, sort, order, status])
+
+
     return (
-        <div className="">
-            
-            <select onChange={(e) => setSort(e.target.value)}>
-                <option value={"payment_time"}> Payment Time </option>
-                <option value={"status"}> Status </option>
-                <option value={"transaction_amount"}> Transaction Amount </option>
-            </select>
+        <div className="p-4 h-screen ">
+            <div className='flex pr-2 pl-2 h-full flex-col md:items-center md:justify-between gap-3 mb-4 '>
 
-            <button className="btn btn-base mt-4" onClick={() => setOrder(order => order === "asc" ? "desc" : "asc")}>Order</button>
-                
-            <Table  transactions={data.transactions} loading={loading}/>
-            <Pagination page={page} maxPages={parseInt(data.maxPages)} totalTransactions={data.totalTransactions} setPage={setPage} />
+                {/* right: filters */}
+                <div className='flex items-center flex-col gap-4'>
+                    <div className="flex items-end gap-2">
+                        <select
+                            value={status}
+                            onChange={(e) => {
+                                setStatus(e.target.value);
+                                setPage(1);
+                            }}
+                            className="select select-sm select-bordered w-40"
+                        >
+                            <option value="">All Status</option>
+                            <option value="success">Success</option>
+                            <option value="pending">Pending</option>
+                            <option value="fail">Failed</option>
+                        </select>
 
+                        {/* optional: reset filters */}
+                        <button
+                            className="btn btn-sm btn-ghost"
+                            onClick={() => {
+                                // setPendingSearch("");
+                                // setSearch("");
+                                setStatus("");
+                                setSort("payment_time");
+                                setOrder("asc");
+                                setPage(1);
+
+                            }}
+                        >
+                            Reset
+                        </button>
+                    </div>
+
+
+                    <Table transactions={data.transactions} loading={loading} page={{ page, limit }} />
+                </div>
+                <Pagination page={page} maxPages={parseInt(data.maxPages)} totalTransactions={data.totalTransactions} setPage={setPage} />
+            </div>
         </div>
+
     )
 }
 
