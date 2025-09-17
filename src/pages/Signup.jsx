@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import toast from 'react-hot-toast';
+
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
@@ -17,6 +19,7 @@ const Signup = () => {
         })
             .then(res => {
                 console.log(res)
+                toast.success("Account created successfully");
                 navigate("/login")
                 setFormData({
                     name: "",
@@ -32,7 +35,7 @@ const Signup = () => {
         // if (success === true) signup(formData);
     };
     return (
-        <div className="flex flex-col w-lg h-full justify-center items-center p-6 sm:p-12 ">
+        <div className="flex flex-col  md:w-lg md:h-full md:justify-center md:items-center p-6 sm:p-12 ">
             <div className="w-full  space-y-8">
 
 

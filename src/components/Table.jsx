@@ -45,7 +45,6 @@ const Table = ( {transactions,loading,error = null ,page} ) => {
                                 key={row.collect_id ?? idx}
                                 className="bg-base-300 transition-all duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-[1.01] hover:shadow-lg hover:z-10 relative cursor-pointer"
                             >
-                                {/* <td>{}</td> */}
                                 <td>{(page.page - 1) * page.limit + idx + 1 }</td>
                                 <td>{row.collect_id}</td>
                                 <td>{row.order_info.school_id}</td>

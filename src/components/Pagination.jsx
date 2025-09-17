@@ -1,7 +1,6 @@
 import React from 'react'
 
 
-
 const Pagination = ({ page, maxPages, totalTransactions, setPage }) => {
     
     return (
