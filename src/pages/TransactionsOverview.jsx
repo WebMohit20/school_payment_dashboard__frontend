@@ -6,6 +6,8 @@ import Table from '../components/Table'
 import Pagination from '../components/Pagination'
 import Filters from '../components/Filters'
 import { ThemeContext } from '../context/ThemeContext'
+import { axiosInstance } from '../lib/axios'
+import toast from 'react-hot-toast'
 
 function TransactionsOverview() {
 
@@ -33,8 +35,7 @@ function TransactionsOverview() {
     useEffect(() => {
         
         setloading(true)
-        axios.get("https://school-paymentanddashboardapplication.onrender.com/api/v1/transactions", {
-            withCredentials: true,
+        axiosInstance.get("/transactions", {
             params: {
                 page,
                 limit,
@@ -50,9 +51,11 @@ function TransactionsOverview() {
                 }
                 setData(res.data)
                 setloading(false)
+                toast.success("All Transactions")
             })
             .catch(err => {
-                console.log(err.response)
+                console.log(err.message)
+                toast.error(err.message)
                 const { status } = err.response
                 if (status != "200") {
                     navigate("/login", { replace: true })

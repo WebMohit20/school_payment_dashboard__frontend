@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { axiosInstance } from "../lib/axios";
+import { Loader2 } from "lucide-react";
 
 function CheckStatusModal({ open }) {
   const [customOrderId, setCustomOrderId] = useState("");
@@ -17,7 +19,7 @@ function CheckStatusModal({ open }) {
     setLoading(true);
     setResponseData(null);
     try {
-      const { data } = await axios.get(`https://school-paymentanddashboardapplication.onrender.com/api/v1/transaction-status/${customOrderId}`, { withCredentials: true })
+      const { data } = await axiosInstance.get(`/transaction-status/${customOrderId}`)
       // console.log(data);
       setResponseData(data);
       toast.success("Transaction status fetched successfully!");
@@ -50,11 +52,12 @@ function CheckStatusModal({ open }) {
                 onChange={(e) => setCustomOrderId(e.target.value)}
               />
               <button
-                className={`btn btn-primary sm:w-auto w-full ${loading ? "loading" : ""}`}
+                className={`btn btn-primary sm:w-auto w-full `}
+                
                 onClick={handleCheckStatus}
                 disabled={loading}
               >
-                {loading ? "Checking..." : "Check"}
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Check"}
               </button>
             </div>
 

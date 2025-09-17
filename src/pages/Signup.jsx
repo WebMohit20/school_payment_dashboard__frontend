@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User,Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { axiosInstance } from '../lib/axios';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -11,12 +12,12 @@ const Signup = () => {
         email: "",
         password: "",
     });
+    const [loading,setLoading] = useState(false)
     const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("https://school-paymentanddashboardapplication.onrender.com/api/v1/signup", formData, {
-            withCredentials: true
-        })
+        setLoading(true)
+        axiosInstance.post("/signup", formData)
             .then(res => {
                 console.log(res)
                 toast.success("Account created successfully");
@@ -29,6 +30,7 @@ const Signup = () => {
 
             })
             .catch(err => console.error(err))
+            .finally(()=>setLoading(false))
 
         // const success = validateForm();
 
@@ -107,8 +109,8 @@ const Signup = () => {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn btn-primary w-full" >
-                        Create Account
+                    <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+                        {loading?<Loader2 className="h-5 w-5 animate-spin" />:"Create Account"}
                     </button>
                 </form>
 

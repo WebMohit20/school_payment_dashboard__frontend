@@ -4,6 +4,8 @@ import axios from "axios"
 import Filters from '../components/Filters'
 import Table from '../components/Table'
 import Pagination from '../components/Pagination'
+import { axiosInstance } from '../lib/axios'
+import toast from 'react-hot-toast'
 
 
 function TransactionsBySchool() {
@@ -24,8 +26,8 @@ function TransactionsBySchool() {
 
     useEffect(() => {
         setloading(true)
-        axios.get(`https://school-paymentanddashboardapplication.onrender.com/api/v1/transactions/school/${schoolId}`, {
-            withCredentials: true,
+        axiosInstance.get(`/transactions/school/${schoolId}`, {
+            
             params: {
                 page,
                 limit,
@@ -40,10 +42,12 @@ function TransactionsBySchool() {
                     navigate("/login", { replace: true })
                 }
                 setData(res.data)
+                toast.success(`Transaction of ${schoolId}`)
                 setloading(false)
             })
             .catch(err => {
                 console.log(err.response)
+                toast.error(err.message)
                 const { status } = err.response
                 if (status != "200") {
                     navigate("/login", { replace: true })

@@ -6,6 +6,7 @@ import { ThemeContext } from '../context/ThemeContext'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { axiosInstance } from "../lib/axios";
 
 
  function Navbar() {
@@ -13,7 +14,7 @@ import toast from 'react-hot-toast'
     const [open,setOpen] = useState(false)
     const navigate = useNavigate()
     const logout = () => {
-        axios.delete("https://school-paymentanddashboardapplication.onrender.com/api/v1/logout", { withCredentials: true })
+        axiosInstance.delete("/logout")
             .then(res => {
                 console.log(res.data)
                 if (res.data.success) {
@@ -23,13 +24,13 @@ import toast from 'react-hot-toast'
                     navigate("/login", { replace: true })
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                toast.error(err.message)
+            })
     }
     return (
         <div className="navbar absolute top-0 bg-base-100 shadow-md px-4">
-            {/* LEFT SECTION */}
-            {/* <div className="flex-1"> */}
-                {/* Mobile Dropdown */}
+            
                 <div className="dropdown ">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                         <Menu className="h-5 w-5" />
@@ -50,9 +51,9 @@ import toast from 'react-hot-toast'
                 </div>
             
 
-            {/* RIGHT SECTION */}
+            
             <div className="flex flex-1  gap-4 items-center justify-end">
-                {/* Theme Toggle */}
+                
                 <label className="toggle text-base-content">
                     <input
                         type="checkbox"
@@ -60,7 +61,7 @@ import toast from 'react-hot-toast'
                         className="theme-controller"
                         onChange={() => theme[1](t => t === "light" ? "dark" : "light")}
                     />
-                    {/* Sun Icon */}
+                    
                     <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         className="h-5 w-5">
                         <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
@@ -75,7 +76,7 @@ import toast from 'react-hot-toast'
                             <path d="m19.07 4.93-1.41 1.41"></path>
                         </g>
                     </svg>
-                    {/* Moon Icon */}
+                    
                     <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         className="h-5 w-5">
                         <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
@@ -84,7 +85,7 @@ import toast from 'react-hot-toast'
                     </svg>
                 </label>
 
-                {/* Auth Links */}
+                
                 {user[0] ? (
                     <button className="flex gap-2 items-center cursor-pointer" onClick={logout}>
                         <LogOut className="h-5 w-5" />

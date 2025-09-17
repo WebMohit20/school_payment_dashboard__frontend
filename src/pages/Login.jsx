@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
 import { ThemeContext } from '../context/ThemeContext';
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Lock, Mail, } from "lucide-react";
-import axios from 'axios';
+import { Eye, EyeOff, Lock, Mail,Loader2 } from "lucide-react";
 import toast from 'react-hot-toast';
+import { axiosInstance } from '../lib/axios';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -11,21 +11,24 @@ const Login = () => {
         email: "",
         password: "",
     });
-    useEffect(()=>{
+    const [loading, setLoading] = useState(false)
+    useEffect(() => {
         localStorage.removeItem("user")
-    },[])
-    
-    const {user} = useContext(ThemeContext)
+    }, [])
+
+    const { user } = useContext(ThemeContext)
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("https://school-paymentanddashboardapplication.onrender.com/api/v1/login", formData, { withCredentials: true })
+        setLoading(true)
+        axiosInstance.post("/login", formData,)
             .then(res => {
                 console.log(res.data)
                 if (res.data.success) {
                     toast.success("Logged in successfully");
                     user[1](res.data.loggedInUser.name)
-                    navigate("/transactions",{replace:true})
+                    localStorage.setItem("user",res.data.loggedInUser.name)
+                    navigate("/transactions", { replace: true })
                     setFormData({
                         email: "",
                         password: ""
@@ -33,6 +36,7 @@ const Login = () => {
                 }
             })
             .catch(err => console.log(err))
+            .finally(()=>setLoading(false))
     };
     return (
         <div className="flex flex-col w-lg h-full justify-center items-center p-6 sm:p-12">
@@ -88,8 +92,11 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn btn-primary w-full">
-                        Sign in
+                    <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+                        {
+                            loading ?
+                                <Loader2 className="h-5 w-5 animate-spin" /> : "Log in"
+                        }
                     </button>
                 </form>
 
