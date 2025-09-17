@@ -14,7 +14,7 @@ function TransactionsBySchool() {
     const [data, setData] = useState({ maxPages: 0 })
     const [page, setPage] = useState(Number(searchParams.get("page")) || 1)
     const [limit, setLimit] = useState(10)
-    const [sort, setSort] = useState(searchParams.get("sort") || "payment_time")
+    const [sort, setSort] = useState(searchParams.get("sort") || "")
     const [order, setOrder] = useState(searchParams.get("order") || "asc")
     const [loading, setloading] = useState(true)
     const [status, setStatus] = useState(searchParams.get("status")?.toLowerCase() || "")
@@ -24,7 +24,7 @@ function TransactionsBySchool() {
 
     useEffect(() => {
         setloading(true)
-        axios.get(`http://localhost:3000/api/v1/transactions/school/${schoolId}`, {
+        axios.get(`https://school-paymentanddashboardapplication.onrender.com/api/v1/transactions/school/${schoolId}`, {
             withCredentials: true,
             params: {
                 page,

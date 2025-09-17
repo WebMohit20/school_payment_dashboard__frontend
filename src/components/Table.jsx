@@ -55,9 +55,9 @@ const Table = ( {transactions,loading,error = null ,page} ) => {
                                     <span
                                         className={
                                             " " +
-                                            (row.status === "success"
+                                            (row.status?.toLowerCase() === "success"
                                                 ? "text-green-500"
-                                                : row.status === "pending"
+                                                : row.status?.toLowerCase() === "pending"
                                                     ? "text-warning"
                                                     : "text-error")
                                         }

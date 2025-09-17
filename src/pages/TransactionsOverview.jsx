@@ -24,7 +24,7 @@ function TransactionsOverview() {
 
     useEffect(() => {
         setloading(true)
-        axios.get("http://localhost:3000/api/v1/transactions", {
+        axios.get("https://school-paymentanddashboardapplication.onrender.com/api/v1/transactions", {
             withCredentials: true,
             params: {
                 page,
@@ -61,22 +61,7 @@ function TransactionsOverview() {
         setSearchParams(params, { replace: true })
     }, [page, sort, order, status])
 
-    useEffect(() => {
-        if (schoolId) {
-            axios.get(`http://localohost:3000/api/v1/transaction/school/${schoolId}`, {
-                withCredentials: true,
-                params: {
-                    page,
-                    limit,
-                    sort,
-                    order,
-                    status
-                }
-            })
-                .then(res => console.log(res))
-                .catch(err => console.error(err))
-        }
-    }, [schoolId])
+    
 
     return (
         <div className="p-4 w-full h-screen bg-base-200 absolute top-14">

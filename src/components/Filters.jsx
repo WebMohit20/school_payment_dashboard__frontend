@@ -1,6 +1,7 @@
 import React from 'react'
-import { ArrowDownWideNarrow,ArrowDownNarrowWide } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 function Filters( {props} ) {
+    const navigate = useNavigate()
     const {setSearch,setStatus,status,setOrder,order,setSort,sort,search,setPage} = props
     return (
         <div>
@@ -21,8 +22,7 @@ function Filters( {props} ) {
                             className="btn btn-primary btn-sm"
                             onClick={() => {
                                 setPage(1)
-
-                                console.log("Search triggered for:", search)
+                                navigate(`/transactions/school/${search}`)
                             }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" role="img">
@@ -67,9 +67,9 @@ function Filters( {props} ) {
                     className="select select-sm select-bordered w-40"
                 >
                     <option value="">All Status</option>
-                    <option value="success">Success</option>
-                    <option value="pending">Pending</option>
-                    <option value="failed">Failed</option>
+                    <option value="SUCCESS">SUCCESS</option>
+                    <option value="PENDING">PENDING</option>
+                    <option value="FAILED">Failed</option>
                 </select>
 
 

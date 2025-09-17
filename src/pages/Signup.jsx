@@ -14,7 +14,7 @@ const Signup = () => {
     const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3000/api/v1/signup", formData, {
+        axios.post("https://school-paymentanddashboardapplication.onrender.com/api/v1/signup", formData, {
             withCredentials: true
         })
             .then(res => {

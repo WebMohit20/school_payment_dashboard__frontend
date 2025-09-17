@@ -8,6 +8,8 @@ import { Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import { Toaster } from 'react-hot-toast'
 import TransactionsBySchool from './pages/TransactionsBySchool'
+import CheckStatusModal from './pages/CheckStatusModal'
+
 
 
 function App() {
@@ -16,14 +18,15 @@ function App() {
   return (
     <div data-theme={theme[0]}>
       <div className="min-h-screen  flex flex-col  items-center justify-center bg-base-200 relative ">
-        {/* <h1 className="text-3xl font-bold">🚀 DaisyUI + Tailwind v4</h1> */}
         <Navbar />
+        
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/transactions' element={<TransactionsOverview />} />
           <Route path='/' element={<TransactionsOverview />} />
+          <Route path='/transactions' element={<TransactionsOverview />} />
           <Route path='/transactions/school/:schoolId' element={<TransactionsBySchool />} />
+          <Route path='/check-status' element={<CheckStatusModal />} />
         </Routes>
         <Toaster/>
         {/* <button className="btn btn-primary mt-4">Primary Button</button> */}

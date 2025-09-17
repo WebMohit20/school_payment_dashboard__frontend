@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { ThemeContext } from '../context/ThemeContext';
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Lock, Mail, } from "lucide-react";
@@ -11,11 +11,15 @@ const Login = () => {
         email: "",
         password: "",
     });
+    useEffect(()=>{
+        localStorage.removeItem("user")
+    },[])
+    
     const {user} = useContext(ThemeContext)
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3000/api/v1/login", formData, { withCredentials: true })
+        axios.post("https://school-paymentanddashboardapplication.onrender.com/api/v1/login", formData, { withCredentials: true })
             .then(res => {
                 console.log(res.data)
                 if (res.data.success) {
