@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useSearchParams, useNavigate } from "react-router-dom"
 import { ArrowDownWideNarrow,ArrowDownNarrowWide } from 'lucide-react'
 import axios from "axios"
 import Table from '../components/Table'
 import Pagination from '../components/Pagination'
 import Filters from '../components/Filters'
+import { ThemeContext } from '../context/ThemeContext'
 
 function TransactionsOverview() {
 
@@ -21,8 +22,16 @@ function TransactionsOverview() {
     const [status, setStatus] = useState(searchParams.get("status")?.toLowerCase() || "")
     const [search, setSearch] = useState("")
     const [schoolId, setSchoolId] = useState("")
+    const {user} = useContext(ThemeContext)
 
+    useEffect(()=>{
+        console.log(user[0])
+        if(!user[0]){
+            return navigate("/login")
+        }
+    },[])
     useEffect(() => {
+        
         setloading(true)
         axios.get("https://school-paymentanddashboardapplication.onrender.com/api/v1/transactions", {
             withCredentials: true,

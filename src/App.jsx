@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import './App.css'
 import TransactionsOverview from './pages/TransactionsOverview'
 import Navbar from './components/Navbar'
@@ -15,6 +15,7 @@ import CheckStatusModal from './pages/CheckStatusModal'
 function App() {
   const { theme, user } = useContext(ThemeContext)
   // console.log(theme[0])
+  
   return (
     <div data-theme={theme[0]}>
       <div className="min-h-screen  flex flex-col  items-center justify-center bg-base-200 relative ">
@@ -23,7 +24,8 @@ function App() {
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          {user[0] && <Route path='/' element={<TransactionsOverview />} />}
+          <Route path='/' element={<Login />} />
+          
           {user[0] && <Route path='/transactions' element={<TransactionsOverview />} />}
           {user[0] && <Route path='/transactions/school/:schoolId' element={<TransactionsBySchool />} />}
           {user[0] && <Route path='/check-status' element={<CheckStatusModal />} />}
