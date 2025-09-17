@@ -2,11 +2,10 @@ import React from 'react'
 
 const Table = ( {transactions,loading,error = null ,page} ) => {
     return (
-        <div id="transactions-table" className="overflow-none ">
-            <table className="table w-[calc(100%+10px)] table-pin-cols">
-                <thead className="bg-base-300 sticky top-0">
+        <div id="transactions-table" className="overflow-none">
+            <table className="table w-full table-pin-cols  bg-base-300">
+                <thead className="sticky top-0 bg-base-100">
                     <tr>
-                        {/* optional Sr no column */}
                         <th className="w-12">Sr.No.</th>
                         <th>Collect_id</th>
                         <th>School_id</th>
@@ -44,7 +43,7 @@ const Table = ( {transactions,loading,error = null ,page} ) => {
                         transactions.map((row, idx) => (
                             <tr
                                 key={row.collect_id ?? idx}
-                                className="transition-all duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-[1.01] hover:shadow-lg hover:z-10 relative"
+                                className="bg-base-300 transition-all duration-250 ease-in-out transform hover:-translate-y-1 hover:scale-[1.01] hover:shadow-lg hover:z-10 relative cursor-pointer"
                             >
                                 {/* <td>{}</td> */}
                                 <td>{(page.page - 1) * page.limit + idx + 1 }</td>
@@ -67,7 +66,7 @@ const Table = ( {transactions,loading,error = null ,page} ) => {
                                         {row.status.slice(0,1).toUpperCase()+row.status.slice(1) }
                                     </span>
                                 </td>
-                                <td>{`ORD-${row.collect_id.slice(row.collect_id.length-4)}`}</td>
+                                <td>{`ODR-${row.collect_id.slice(row.collect_id.length-4)}`}</td>
                             </tr>
                         ))
                     )}
