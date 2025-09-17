@@ -13,22 +13,22 @@ import CheckStatusModal from './pages/CheckStatusModal'
 
 
 function App() {
-  const {theme} = useContext(ThemeContext)
+  const { theme, user } = useContext(ThemeContext)
   // console.log(theme[0])
   return (
     <div data-theme={theme[0]}>
       <div className="min-h-screen  flex flex-col  items-center justify-center bg-base-200 relative ">
         <Navbar />
-        
+
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/' element={<TransactionsOverview />} />
-          <Route path='/transactions' element={<TransactionsOverview />} />
-          <Route path='/transactions/school/:schoolId' element={<TransactionsBySchool />} />
-          <Route path='/check-status' element={<CheckStatusModal />} />
+          {user[0] && <Route path='/' element={<TransactionsOverview />} />}
+          {user[0] && <Route path='/transactions' element={<TransactionsOverview />} />}
+          {user[0] && <Route path='/transactions/school/:schoolId' element={<TransactionsBySchool />} />}
+          {user[0] && <Route path='/check-status' element={<CheckStatusModal />} />}
         </Routes>
-        <Toaster/>
+        <Toaster />
         {/* <button className="btn btn-primary mt-4">Primary Button</button> */}
 
         {/* <div className="loading loading-spinner loading-lg mt-4">loader</div> */}
